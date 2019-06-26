@@ -22,21 +22,21 @@ var display = process.argv.slice(3).join(" ");
 function omdbSearch() {
     axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchMovie)
   .then(function (response) {
-    console.log(`Title: ${response.data.Title}\nYear: ${response.data.Year}\nIMDB Rating: ${response.data.imdbRating}\nRotten Tomatoes Rating: ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}`);
+    console.log(`Title: ${response.data.Title}\nYear: ${response.data.Year}\nIMDB Rating: ${response.data.imdbRating}\nRotten Tomatoes Rating: ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}\n----------\n`);
   })
   .catch(function (error) {
     console.log(error);
   })
-    console.log("This is the OMDB search");
+    console.log(`\n\n----------OMBD RESULTS FOR: ${display}----------\n`);
 }
 var searchMovie = process.argv.slice(3).join("+");
 
 function concertSearch() {
-    console.log(`\n\nUpcoming concerts for ${display}\n\n`);
+    console.log(`\n\n----------Upcoming concerts for ${display}----------\n`);
     axios.get("https://rest.bandsintown.com/artists/" + searchConcert + "/events?app_id=codingbootcamp")
     .then(function (response) {
         for (var i = 0; i < response.data.length; i++) {
-            console.log(`Venue: ${response.data[i].venue.name}\nLocation: ${response.data[i].venue.city}, ${response.data[i].venue.region}, ${response.data[i].venue.country}\nDate: ${response.data[i].datetime}\n\n`);
+            console.log(`----------\nVenue: ${response.data[i].venue.name}\nLocation: ${response.data[i].venue.city}, ${response.data[i].venue.region}, ${response.data[i].venue.country}\nDate: ${response.data[i].datetime}\n----------\n\n`);
         }
     });
 };

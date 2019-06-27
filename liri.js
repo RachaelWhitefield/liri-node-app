@@ -21,12 +21,12 @@ var display = process.argv.slice(3).join(" ");
 
 function omdbSearch() {
     axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchMovie)
-  .then(function (response) {
-    console.log(`Title: ${response.data.Title}\nYear: ${response.data.Year}\nIMDB Rating: ${response.data.imdbRating}\nRotten Tomatoes Rating: ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}\n----------\n`);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
+        .then(function (response) {
+            console.log(`Title: ${response.data.Title}\nYear: ${response.data.Year}\nIMDB Rating: ${response.data.imdbRating}\nRotten Tomatoes Rating: ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}\n----------\n`);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
     console.log(`\n\n----------OMBD RESULTS FOR: ${display}----------\n`);
 }
 var searchMovie = process.argv.slice(3).join("+");
@@ -34,25 +34,25 @@ var searchMovie = process.argv.slice(3).join("+");
 function concertSearch() {
     console.log(`\n\n----------Upcoming concerts for ${display}----------\n`);
     axios.get("https://rest.bandsintown.com/artists/" + searchConcert + "/events?app_id=codingbootcamp")
-    .then(function (response) {
-        for (var i = 0; i < response.data.length; i++) {
-            console.log(`----------\nVenue: ${response.data[i].venue.name}\nLocation: ${response.data[i].venue.city}, ${response.data[i].venue.region}, ${response.data[i].venue.country}\nDate: ${response.data[i].datetime}\n----------\n\n`);
-        }
-    });
+        .then(function (response) {
+            for (var i = 0; i < response.data.length; i++) {
+                console.log(`----------\nVenue: ${response.data[i].venue.name}\nLocation: ${response.data[i].venue.city}, ${response.data[i].venue.region}, ${response.data[i].venue.country}\nDate: ${response.data[i].datetime}\n----------\n\n`);
+            }
+        });
 };
 
 
 function doWhatItSays() {
-    fs.appendFile("random.txt", function(error, data) {
-        if (error) {
-            return console.log(error);
-        } else
-            console.log("Backstreet Boys for LIFE");
-    })
+    // fs.appendFile("random.txt", function(error, data) {
+    //     if (error) {
+    //         return console.log(error);
+    //     } else
+    //         console.log("Backstreet Boys for LIFE");
+    // })
     console.log("This is Do what it says");
 }
 
-switch(action) {
+switch (action) {
     case "spotify-this-song":
         spotifySearch();
         break;

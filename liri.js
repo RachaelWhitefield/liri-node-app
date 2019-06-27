@@ -11,13 +11,18 @@ var searchMovie = process.argv.slice(3).join("+");
 var searchConcert = process.argv.slice(3).join("%20");
 var display = process.argv.slice(3).join(" ");
 
-// function spotifySearch() {
-//     axios.get("")
-//     .then(function(response) {
-//         console.log(response);
-//     })
-//     console.log("This is the spotify search");
-// };
+function spotifySearch() {
+    console.log("This is the Spotify search");
+    spotify.search({
+        type: "track",
+        query: searchTerm,
+    }, function(err, data) {
+        if(err) {
+            return console.log("Error occured: " + err);
+        }
+        console.log(data);
+    })
+}
 
 function omdbSearch() {
     axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchMovie)

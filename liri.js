@@ -10,19 +10,40 @@ var action = process.argv[2].toLowerCase();
 var searchMovie = process.argv.slice(3).join("+");
 var searchConcert = process.argv.slice(3).join("%20");
 var display = process.argv.slice(3).join(" ");
+var searchSong = process.argv.slice(3).join("");
 
 function spotifySearch() {
-    console.log("This is the Spotify search");
+    console.log("This is the spotify search");
+    if(process.argv.length === 3){
+        searchTerm = "Hotel California";
+    }
     spotify.search({
         type: "track",
         query: searchTerm,
-    }, function(err, data) {
+        limit: 10,
+    }, function(err,data) {
         if(err) {
-            return console.log("Error occured: " + err);
+            return console.log("Error occurred: " + err);
         }
-        console.log(data);
+        for (var i = 0; i < data.tracks.items.length; i++) {
+ 
+        console.log(`Artist: ${data.tracks.items[i].artists[0].name}\nSong Name: ${data.tracks.items[i].name}\nSpotify Preview Link: ${data.tracks.items[i].preview_url}\nAlbum: ${data.tracks.items[i].album.name}\n\n`);
+    }
     })
-}
+ }
+ 
+ var searchTerm = process.argv.slice(3);
+// function spotifySearch() {
+//     spotify.search({
+//         type: "track",
+//         query: searchSong,
+//     }, function(err, data) {
+//         if(err) {
+//             return console.log("Error occured: " + err);
+//         }
+//         console.log(data);
+//     })
+// }
 
 function omdbSearch() {
     axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchMovie)
@@ -48,12 +69,12 @@ function concertSearch() {
 
 
 function doWhatItSays() {
-    // fs.appendFile("random.txt", function(error, data) {
-    //     if (error) {
-    //         return console.log(error);
-    //     } else
-    //         console.log("Backstreet Boys for LIFE");
-    // })
+    fs.appendFile("random.txt", "spotify-this-song", function(error, data) {
+        if (error) {
+            return console.log(error);
+        } else
+            console.log("Backstreet Boys for LIFE");
+    })
     console.log("This is Do what it says");
 }
 

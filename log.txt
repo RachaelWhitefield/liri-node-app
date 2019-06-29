@@ -1,0 +1,11 @@
+
+
+spotify-this-song ["Sunday Morning"]
+spotify-this-song "The Sign"
+movie-this ["gone with the wind"]
+movie-this "Mr. Nobody"
+concert-this "ben%20harper"
+do-what-it-says []
+do-what-it-says "The Sign"
+do-what-it-says []
+do-what-it-says "The Sign"

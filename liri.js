@@ -1,21 +1,21 @@
 require("dotenv").config();
 const axios = require('axios');
 var Spotify = require('node-spotify-api');
+var fs = require("fs");
 
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 // 1557ce71 OMDB API KEY
 
 var action = process.argv[2].toLowerCase();
-var searchMovie = process.argv.slice(3).join("+");
-var searchConcert = process.argv.slice(3).join("%20");
+var searchTerm = process.argv.slice(3);
 var display = process.argv.slice(3).join(" ");
-var searchSong = process.argv.slice(3).join("");
+// var searchSong = process.argv.slice(3).join("");
 
 function spotifySearch() {
-    console.log("This is the spotify search");
+    // console.log("This is the spotify search");
     if(process.argv.length === 3){
-        searchTerm = "Hotel California";
+        searchTerm = "The Sign";
     }
     spotify.search({
         type: "track",
@@ -30,12 +30,14 @@ function spotifySearch() {
         console.log(`Artist: ${data.tracks.items[i].artists[0].name}\nSong Name: ${data.tracks.items[i].name}\nSpotify Preview Link: ${data.tracks.items[i].preview_url}\nAlbum: ${data.tracks.items[i].album.name}\n\n`);
     }
     })
+    trackInfo(action, searchTerm);
  }
  
- 
-
-function omdbSearch() {
-    axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchMovie)
+ function omdbSearch() {
+    if(process.argv.length === 3){
+        searchTerm = "Mr. Nobody";
+    }
+    axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchTerm)
         .then(function (response) {
             console.log(`Title: ${response.data.Title}\nYear: ${response.data.Year}\nIMDB Rating: ${response.data.imdbRating}\nRotten Tomatoes Rating: ${response.data.Ratings[1].Value}\nCountry: ${response.data.Country}\nLanguage: ${response.data.Language}\nPlot: ${response.data.Plot}\nActors: ${response.data.Actors}\n----------\n`);
         })
@@ -43,30 +45,38 @@ function omdbSearch() {
             console.log(error);
         })
     console.log(`\n\n----------OMBD RESULTS FOR: ${display}----------\n`);
+    trackInfo(action, searchTerm);
 }
-var searchMovie = process.argv.slice(3).join("+");
 
 function concertSearch() {
+    searchTerm = process.argv.slice(3).join("%20");
     console.log(`\n\n----------Upcoming concerts for ${display}----------\n`);
-    axios.get("https://rest.bandsintown.com/artists/" + searchConcert + "/events?app_id=codingbootcamp")
+    axios.get("https://rest.bandsintown.com/artists/" + searchTerm + "/events?app_id=codingbootcamp")
         .then(function (response) {
+            console.log("axios function is running");
             for (var i = 0; i < response.data.length; i++) {
                 console.log(`----------\nVenue: ${response.data[i].venue.name}\nLocation: ${response.data[i].venue.city}, ${response.data[i].venue.region}, ${response.data[i].venue.country}\nDate: ${response.data[i].datetime}\n----------\n\n`);
             }
+
         });
+        trackInfo(action, searchTerm);
 };
 
 
 function doWhatItSays() {
-    fs.appendFile("random.txt", "utf8", function(error, data) {
+    fs.readFile("random.txt", "utf8", function(error, data) {
         if (error) {
             return console.log(error);
         } var dataArray = data.split(", ");
-            console.log(dataArray);
+         var command = dataArray[0];
+            searchTerm = dataArray[1];
+            work(command);
         })
+        trackInfo(action, searchTerm);
     }
 
-switch (action) {
+function work(term) {
+switch (term) {
     case "spotify-this-song":
         spotifySearch();
         break;
@@ -81,4 +91,18 @@ switch (action) {
         break;
     default:
         return console.log("Choose a valid action");
+}}
+work(action);
+
+function trackInfo(termOne, termTwo) {
+    termTwo = JSON.stringify(termTwo);
+    termTwo = termTwo.split("\",\"").join(" ");
+    var text = `\n${termOne} ${termTwo}`;
+    fs.appendFile("./log.txt", text, function(error) {
+        if (error) {
+            console.log(error);
+        } else {
+        
+        }
+    })
 }

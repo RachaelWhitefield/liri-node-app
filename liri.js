@@ -32,18 +32,7 @@ function spotifySearch() {
     })
  }
  
- var searchTerm = process.argv.slice(3);
-// function spotifySearch() {
-//     spotify.search({
-//         type: "track",
-//         query: searchSong,
-//     }, function(err, data) {
-//         if(err) {
-//             return console.log("Error occured: " + err);
-//         }
-//         console.log(data);
-//     })
-// }
+ 
 
 function omdbSearch() {
     axios.get("http://www.omdbapi.com/?apikey=1557ce71&t=" + searchMovie)
@@ -69,14 +58,13 @@ function concertSearch() {
 
 
 function doWhatItSays() {
-    fs.appendFile("random.txt", "spotify-this-song", function(error, data) {
+    fs.appendFile("random.txt", "utf8", function(error, data) {
         if (error) {
             return console.log(error);
-        } else
-            console.log("Backstreet Boys for LIFE");
-    })
-    console.log("This is Do what it says");
-}
+        } var dataArray = data.split(", ");
+            console.log(dataArray);
+        })
+    }
 
 switch (action) {
     case "spotify-this-song":
